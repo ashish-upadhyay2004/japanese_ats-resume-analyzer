@@ -49,14 +49,22 @@ const degrees = [
 ];
 
 const courses = [
-  "JLPT N5 Preparation",
-  "JLPT N4 Preparation",
-  "JLPT N3 Preparation",
-  "JLPT N2 Preparation",
-  "JLPT N1 Preparation",
-  "Business Japanese",
-  "Conversational Japanese",
-  "Japanese for Travel",
+  "JLPT N5 Preparation (WEEKDAY)",
+  "JLPT N5 Preparation (WEEKEND)",
+  "JLPT N4 Preparation (WEEKDAY)",
+  "JLPT N4 Preparation (WEEKEND)",
+  "JLPT N3 Preparation (WEEKDAY)",
+  "JLPT N3 Preparation (WEEKEND)",
+  "JLPT N2 Preparation (WEEKDAY)",
+  "JLPT N2 Preparation (WEEKEND)",
+  "JLPT N1 Preparation (WEEKDAY)",
+  "JLPT N1 Preparation (WEEKEND)",
+  "Business Japanese (WEEKDAY)",
+  "Business Japanese (WEEKEND)",
+  "Conversational Japanese (WEEKDAY)",
+  "Conversational Japanese (WEEKEND)",
+  "Japanese for Travel (WEEKDAY)",
+  "Japanese for Travel (WEEKEND)",
 ];
 
 const Index = () => {
