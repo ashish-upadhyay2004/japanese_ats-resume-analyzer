@@ -67,6 +67,15 @@ const AdminDashboard = () => {
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [loading, setLoading] = useState(true);
   const [keywords, setKeywords] = useState("");
+  useEffect(() => {
+  const savedKeywords = localStorage.getItem("ats_keywords");
+
+  if (savedKeywords) {
+    setKeywords(savedKeywords);
+    setAppliedKeywords(savedKeywords.split(","));
+  }
+}, []);
+  const [appliedKeywords, setAppliedKeywords] = useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState<string | null>(null);
   
   // Filter states
@@ -168,6 +177,7 @@ const AdminDashboard = () => {
       .split(/[,\s]+/)
       .map((k) => k.trim())
       .filter((k) => k.length > 0);
+      setAppliedKeywords(customKeywords);
 
     // ✅ STEP A: download the PDF from storage
     const { data: pdfBlob, error: downloadError } = await supabase.storage
@@ -215,7 +225,8 @@ const AdminDashboard = () => {
     .split(/[,\s]+/)
     .map((k) => k.trim())
     .filter((k) => k.length > 0);
-
+    setAppliedKeywords(customKeywords);
+localStorage.setItem("ats_keywords", customKeywords.join(","));
   toast.info(`Analyzing ${applicants.length} CVs...`);
 
   for (const applicant of applicants) {
@@ -459,10 +470,53 @@ const AdminDashboard = () => {
                 className="h-12"
               />
             </div>
+             
+           { /*
             <Button onClick={analyzeAllCVs} size="lg" variant="hero">
-              <Sparkles className="w-4 h-4 mr-2" />
+            {appliedKeywords.length > 0 && (
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-sm text-muted-foreground">Applied Keywords:</span>
+    {appliedKeywords.map((keyword, index) => (
+      <Badge key={index} variant="outline" className="capitalize">
+        {keyword}
+      </Badge>
+    ))}
+  </div>
+)}
+            <Sparkles className="w-4 h-4 mr-2" />
               Analyze All CVs
             </Button>
+            */}
+            <Button onClick={analyzeAllCVs} size="lg" variant="hero">
+  <Sparkles className="w-4 h-4 mr-2" />
+  Analyze All CVs
+</Button>
+{appliedKeywords.length > 0 && (
+  <div className="mt-4 flex flex-wrap gap-2">
+    <span className="text-sm text-muted-foreground mr-2">
+      Applied Keywords:
+    </span>
+
+    {appliedKeywords.map((keyword, index) => (
+      <Badge key={index} variant="outline" className="capitalize">
+        {keyword}
+      </Badge>
+    ))}
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => {
+        setKeywords("");
+        setAppliedKeywords([]);
+        localStorage.removeItem("ats_keywords");
+      }}
+      className="ml-2"
+    >
+      Clear
+    </Button>
+  </div>
+)}
+
           </div>
         </div>
 
@@ -600,6 +654,11 @@ const AdminDashboard = () => {
                         <div className="flex items-center gap-2">
                           {applicant.keyword_match_score !== null ? (
                             <Badge 
+                            title={
+    applicant.matched_keywords && applicant.matched_keywords.length > 0
+      ? applicant.matched_keywords.join(", ")
+      : "No matched keywords"
+  }
                               variant={applicant.keyword_match_score >= 50 ? "default" : "secondary"}
                               className={applicant.keyword_match_score >= 50 ? "bg-success" : ""}
                             >
