@@ -461,38 +461,27 @@ localStorage.setItem("ats_keywords", customKeywords.join(","));
           <p className="text-sm text-muted-foreground mb-4">
             CV content is automatically analyzed. Add custom keywords below to include in the matching.
           </p>
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
+
+          <div className="flex flex-col  gap-4">
+            {/* Row 1: Input + Button */}
+            <div className="flex gap-4">
               <Input
                 placeholder="Add custom keywords (optional, e.g., Java, SQL, Japanese)"
                 value={keywords}
                 onChange={(e) => setKeywords(e.target.value)}
-                className="h-12"
+                className="h-12 flex-1"
               />
-            </div>
-             
-           { /*
-            <Button onClick={analyzeAllCVs} size="lg" variant="hero">
-            {appliedKeywords.length > 0 && (
-  <div className="mt-4 flex flex-wrap gap-2">
-    <span className="text-sm text-muted-foreground">Applied Keywords:</span>
-    {appliedKeywords.map((keyword, index) => (
-      <Badge key={index} variant="outline" className="capitalize">
-        {keyword}
-      </Badge>
-    ))}
-  </div>
-)}
-            <Sparkles className="w-4 h-4 mr-2" />
-              Analyze All CVs
-            </Button>
-            */}
-            <Button onClick={analyzeAllCVs} size="lg" variant="hero">
+               <Button onClick={analyzeAllCVs} size="lg" variant="hero">
   <Sparkles className="w-4 h-4 mr-2" />
   Analyze All CVs
 </Button>
+            </div>
+             
+        
+           
+{/* Row 2: Keywords */}
 {appliedKeywords.length > 0 && (
-  <div className="mt-4 flex flex-wrap gap-2">
+  <div className=" flex flex-wrap gap-2 w-full">
     <span className="text-sm text-muted-foreground mr-2">
       Applied Keywords:
     </span>
@@ -526,6 +515,7 @@ localStorage.setItem("ats_keywords", customKeywords.join(","));
             <Filter className="w-5 h-5 text-muted-foreground" />
             <h2 className="font-display text-lg font-semibold">Search & Filter</h2>
           </div>
+
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <Input
@@ -601,6 +591,8 @@ localStorage.setItem("ats_keywords", customKeywords.join(","));
               </Button>
             )}
           </div>
+
+
           {(searchQuery || statusFilter !== "all" || courseFilter !== "all") && (
             <p className="mt-3 text-sm text-muted-foreground">
               Showing {filteredApplicants.length} of {applicants.length} applicants
