@@ -220,13 +220,21 @@ const AdminDashboard = () => {
 
 
  const analyzeAllCVs = async () => {
-  const customKeywords = keywords
-    .toLowerCase()
-    .split(/[,\s]+/)
-    .map((k) => k.trim())
-    .filter((k) => k.length > 0);
-    setAppliedKeywords(customKeywords);
+  const newKeywords = keywords
+  .toLowerCase()
+  .split(/[,\s]+/)
+  .map((k) => k.trim())
+  .filter((k) => k.length > 0);
+
+// ✅ Merge + remove duplicates
+const customKeywords = [...new Set([...appliedKeywords, ...newKeywords])];
+
+// ✅ Update state + storage
+setAppliedKeywords(customKeywords);
 localStorage.setItem("ats_keywords", customKeywords.join(","));
+
+// ✅ Clear input (optional but recommended)
+setKeywords("");
   toast.info(`Analyzing ${applicants.length} CVs...`);
 
   for (const applicant of applicants) {
@@ -487,10 +495,24 @@ localStorage.setItem("ats_keywords", customKeywords.join(","));
     </span>
 
     {appliedKeywords.map((keyword, index) => (
-      <Badge key={index} variant="outline" className="capitalize">
-        {keyword}
-      </Badge>
-    ))}
+  <div
+    key={index}
+    className="flex items-center gap-1 border rounded-full px-3 py-1"
+  >
+    <span className="capitalize text-sm">{keyword}</span>
+
+    <button
+      onClick={() => {
+        const updated = appliedKeywords.filter((k) => k !== keyword);
+        setAppliedKeywords(updated);
+        localStorage.setItem("ats_keywords", updated.join(","));
+      }}
+      className="text-xs ml-1 hover:text-red-500"
+    >
+      ✕
+    </button>
+  </div>
+))}
     <Button
       variant="outline"
       size="sm"
